@@ -1,0 +1,2 @@
+defmodule PtahProto do
+end
