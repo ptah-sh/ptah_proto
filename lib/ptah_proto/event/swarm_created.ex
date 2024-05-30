@@ -17,4 +17,6 @@ defmodule PtahProto.Event.SwarmCreated do
   alias PtahProto.Event.SwarmCreated.Data.DockerData
 
   defstruct ptah: %PtahData{swarm_id: 0}, docker: %DockerData{swarm_id: ""}
+
+  def name, do: "event:swarm_created"
 end

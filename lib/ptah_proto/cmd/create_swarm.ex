@@ -10,4 +10,6 @@ defmodule PtahProto.Cmd.CreateSwarm do
   alias PtahProto.Cmd.CreateSwarm.Data.CreateSwarmPtah
 
   defstruct ptah: %CreateSwarmPtah{swarm_id: 0}
+
+  def name, do: "cmd:create_swarm"
 end
