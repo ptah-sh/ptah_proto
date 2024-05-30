@@ -1,4 +1,4 @@
-defmodule PtahProto.Cmd.Swarm.Create do
+defmodule PtahProto.Cmd.CreateSwarm do
   defstruct [
     # No Arguments at the moment
   ]

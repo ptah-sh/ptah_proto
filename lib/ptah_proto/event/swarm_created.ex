@@ -1,4 +1,4 @@
-defmodule PtahProto.Event.Swarm.Created.Data do
+defmodule PtahProto.Event.SwarmCreated.Data do
   defmodule PtahData do
     @enforce_keys [:swarm_id]
 
@@ -12,9 +12,9 @@ defmodule PtahProto.Event.Swarm.Created.Data do
   end
 end
 
-defmodule PtahProto.Event.Swarm.Created do
-  alias PtahProto.Event.Swarm.Created.Data.PtahData
-  alias PtahProto.Event.Swarm.Created.Data.DockerData
+defmodule PtahProto.Event.SwarmCreated do
+  alias PtahProto.Event.SwarmCreated.Data.PtahData
+  alias PtahProto.Event.SwarmCreated.Data.DockerData
 
   defstruct ptah: %PtahData{swarm_id: 0}, docker: %DockerData{swarm_id: ""}
 end
