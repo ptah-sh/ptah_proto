@@ -1,22 +1,20 @@
-defmodule PtahProto.Event.SwarmCreated.Data do
-  defmodule PtahData do
-    @enforce_keys [:swarm_id]
+defmodule PtahProto.Event.SwarmCreated.DockerData do
+  @enforce_keys [:swarm_id]
 
-    defstruct swarm_id: 0
-  end
+  defstruct swarm_id: ""
 
-  defmodule DockerData do
-    @enforce_keys [:swarm_id]
-
-    defstruct swarm_id: ""
-  end
+  @type t :: %__MODULE__{
+          swarm_id: String.t()
+        }
 end
 
 defmodule PtahProto.Event.SwarmCreated do
-  alias PtahProto.Event.SwarmCreated.Data.PtahData
-  alias PtahProto.Event.SwarmCreated.Data.DockerData
+  alias PtahProto.Event.SwarmCreated.DockerData
 
-  defstruct ptah: %PtahData{swarm_id: 0}, docker: %DockerData{swarm_id: ""}
+  defstruct swarm_id: 0, docker: nil
 
-  def name, do: "event:swarm_created"
+  @type t :: %__MODULE__{
+          swarm_id: integer(),
+          docker: DockerData.t()
+        }
 end

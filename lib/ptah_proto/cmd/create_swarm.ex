@@ -1,15 +1,7 @@
-defmodule PtahProto.Cmd.CreateSwarm.Data do
-  defmodule CreateSwarmPtah do
-    @enforce_keys [:swarm_id]
-
-    defstruct swarm_id: 0
-  end
-end
-
 defmodule PtahProto.Cmd.CreateSwarm do
-  alias PtahProto.Cmd.CreateSwarm.Data.CreateSwarmPtah
+  defstruct swarm_id: 0
 
-  defstruct ptah: %CreateSwarmPtah{swarm_id: 0}
-
-  def name, do: "cmd:create_swarm"
+  @type t :: %__MODULE__{
+          swarm_id: integer()
+        }
 end
