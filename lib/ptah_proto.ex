@@ -16,7 +16,7 @@ defmodule PtahProto do
     end
   end
 
-  def __using__(:phx_channel) do
+  defmacro __using__(:phx_channel) do
     quote do
       use Phoenix.Channel
 
@@ -31,7 +31,7 @@ defmodule PtahProto do
     end
   end
 
-  def __using__(:slipstream) do
+  defmacro __using__(:slipstream) do
     quote do
       use Slipstream
 
