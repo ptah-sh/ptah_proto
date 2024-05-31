@@ -43,7 +43,7 @@ defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate do
   def parse(%{} = payload) do
     %__MODULE__{
       container_spec: ContainerSpec.parse(payload["container_spec"]),
-      networks: Network.parse(payload["networks"])
+      networks: Enum.map(payload["networks"], &Network.parse/1)
     }
   end
 end
