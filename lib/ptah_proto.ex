@@ -65,7 +65,7 @@ defmodule PtahProto do
     quote do
       @behaviour PtahProto
 
-      def join(socket, %Cmd.Join{} = packet) do
+      def push(socket, %Cmd.Join{} = packet) do
         Slipstream.join(socket, unquote(topic), packet)
       end
 
