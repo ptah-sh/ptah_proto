@@ -12,6 +12,8 @@ defmodule PtahProto.Event.SwarmCreated.Docker do
   end
 end
 
+# TODO: rename into "SwarmJoined"? We can then send this exact structure when agent joins the server.
+#   In this case, the "swarm_id" should be removed and handled purely on the server side.
 defmodule PtahProto.Event.SwarmCreated do
   alias PtahProto.Event.SwarmCreated.Docker
 
