@@ -38,9 +38,14 @@ defmodule PtahProto do
     end
   end
 
-  defmacro __using__(:phx_channel) do
+  defmacro __using__(phx_topic: topic) do
     quote do
       @behaviour PtahProto
+
+      @impl true
+      def join(unquote(topic), payload, socket) do
+        join(Cmd.Join.parse(payload), socket)
+      end
 
       @impl true
       def handle_in("ptah:" <> name, payload, socket) do
@@ -60,9 +65,15 @@ defmodule PtahProto do
     quote do
       @behaviour PtahProto
 
+      def join(socket, %Cmd.Join{} = packet) do
+        Slipstream.join(socket, unquote(topic), packet)
+      end
+
       @impl Slipstream
       def handle_message(_topic, "ptah:" <> name, payload, socket) do
-        handle_message(name, payload, socket)
+        {:noreply} = handle_message(name, payload, socket)
+
+        {:ok, socket}
       end
 
       defp ptah_proto_push(socket, name, packet) do
