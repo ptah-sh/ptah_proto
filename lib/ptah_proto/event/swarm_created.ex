@@ -19,7 +19,7 @@ defmodule PtahProto.Event.SwarmCreated do
 
   @derive Jason.Encoder
   @enforce_keys [:swarm_id, :docker]
-  defstruct swarm_id: 0, docker: nil
+  defstruct swarm_id: 0, docker: %{}
 
   @type t :: %__MODULE__{
           swarm_id: integer(),
