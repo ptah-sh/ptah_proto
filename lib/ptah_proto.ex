@@ -3,28 +3,24 @@ defmodule PtahProto do
 
   alias PtahProto.{Cmd, Event}
 
-  @spec parse(String.t(), map()) :: Cmd.CreateSwarm.t()
   def parse("cmd:create_swarm", payload), do: Cmd.CreateSwarm.parse(payload)
-
-  @spec parse(String.t(), map()) :: Cmd.CreateStack.t()
   def parse("cmd:create_stack", payload), do: Cmd.CreateStack.parse(payload)
-
-  @spec parse(String.t(), map()) :: Event.SwarmCreated.t()
   def parse("event:swarm_created", payload), do: Event.SwarmCreated.parse(payload)
-
-  @spec parse(String.t(), map()) :: Event.ServiceCreated.t()
   def parse("event:service_created", payload), do: Event.ServiceCreated.parse(payload)
 
   defp pushes() do
     quote do
       def push(socket, %Cmd.CreateSwarm{} = packet),
-        do: ptah_push(socket, "cmd:create_swarm", packet)
+        do: ptah_proto_push(socket, "cmd:create_swarm", packet)
 
       def push(socket, %Event.SwarmCreated{} = packet),
-        do: ptah_push(socket, "event:swarm_created", packet)
+        do: ptah_proto_push(socket, "event:swarm_created", packet)
 
       def push(socket, %Event.ServiceCreated{} = packet),
-        do: ptah_push(socket, "event:service_created", packet)
+        do: ptah_proto_push(socket, "event:service_created", packet)
+
+      def push(socket, %Cmd.CreateStack{} = packet),
+        do: ptah_proto_push(socket, "cmd:create_stack", packet)
     end
   end
 
@@ -47,7 +43,7 @@ defmodule PtahProto do
         handle_message(name, payload, socket)
       end
 
-      defp ptah_push(socket, name, packet) do
+      defp ptah_proto_push(socket, name, packet) do
         Phoenix.Channel.push(socket, "ptah:#{name}", packet)
       end
 
@@ -65,7 +61,7 @@ defmodule PtahProto do
         handle_message(name, payload, socket)
       end
 
-      defp ptah_push(socket, name, packet) do
+      defp ptah_proto_push(socket, name, packet) do
         Slipstream.push(socket, unquote(topic), "ptah:#{name}", packet)
       end
 
