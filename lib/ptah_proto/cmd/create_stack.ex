@@ -17,14 +17,15 @@ end
 defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.Network do
   @derive Jason.Encoder
   @enforce_keys [:target]
-  defstruct target: ""
+  defstruct target: "", aliases: []
 
   @type t :: %__MODULE__{
-          target: String.t()
+          target: String.t(),
+          aliases: [String.t()]
         }
 
   def parse(%{} = payload) do
-    %__MODULE__{target: payload["target"]}
+    %__MODULE__{target: payload["target"], aliases: Enum.map(payload["aliases"], & &1)}
   end
 end
 
