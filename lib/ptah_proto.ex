@@ -10,6 +10,9 @@ defmodule PtahProto do
     quote do
       def push(socket, %Cmd.CreateSwarm{} = packet),
         do: ptah_push(socket, "cmd:create_swarm", packet)
+
+      def push(socket, %Event.SwarmCreated{} = packet),
+        do: ptah_push(socket, "event:swarm_created", packet)
     end
   end
 
