@@ -41,7 +41,7 @@ defmodule PtahProto do
     end
   end
 
-  defmacro __using__(:slipstream, topic: topic) do
+  defmacro __using__(slipstream_topic: topic) do
     quote do
       @behaviour PtahProto
 
