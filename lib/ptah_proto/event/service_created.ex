@@ -16,7 +16,7 @@ defmodule PtahProto.Event.ServiceCreated do
   alias PtahProto.Event.ServiceCreated.Docker
 
   @derive Jason.Encoder
-  @enforce_keys [:service_id]
+  @enforce_keys [:service_id, :docker]
   defstruct service_id: 0, docker: %{}
 
   @type t :: %__MODULE__{

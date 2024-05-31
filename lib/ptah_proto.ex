@@ -3,10 +3,16 @@ defmodule PtahProto do
 
   alias PtahProto.{Cmd, Event}
 
+  @spec parse(String.t(), map()) :: Cmd.CreateSwarm.t()
   def parse("cmd:create_swarm", payload), do: Cmd.CreateSwarm.parse(payload)
+
+  @spec parse(String.t(), map()) :: Cmd.CreateStack.t()
   def parse("cmd:create_stack", payload), do: Cmd.CreateStack.parse(payload)
 
+  @spec parse(String.t(), map()) :: Event.SwarmCreated.t()
   def parse("event:swarm_created", payload), do: Event.SwarmCreated.parse(payload)
+
+  @spec parse(String.t(), map()) :: Event.ServiceCreated.t()
   def parse("event:service_created", payload), do: Event.ServiceCreated.parse(payload)
 
   defp pushes() do
@@ -16,6 +22,9 @@ defmodule PtahProto do
 
       def push(socket, %Event.SwarmCreated{} = packet),
         do: ptah_push(socket, "event:swarm_created", packet)
+
+      def push(socket, %Event.ServiceCreated{} = packet),
+        do: ptah_push(socket, "event:service_created", packet)
     end
   end
 
