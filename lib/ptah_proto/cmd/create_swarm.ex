@@ -8,6 +8,6 @@ defmodule PtahProto.Cmd.CreateSwarm do
         }
 
   def parse(%{} = payload) do
-    %__MODULE__{swarm_id: String.to_integer(payload["swarm_id"])}
+    %__MODULE__{swarm_id: payload["swarm_id"]}
   end
 end

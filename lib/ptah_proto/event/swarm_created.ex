@@ -26,7 +26,7 @@ defmodule PtahProto.Event.SwarmCreated do
 
   def parse(%{} = payload) do
     %__MODULE__{
-      swarm_id: String.to_integer(payload["swarm_id"]),
+      swarm_id: payload["swarm_id"],
       docker: Docker.parse(payload["docker"])
     }
   end
