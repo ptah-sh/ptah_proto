@@ -4,7 +4,10 @@ defmodule PtahProto do
   alias PtahProto.{Cmd, Event}
 
   def parse("cmd:create_swarm", payload), do: Cmd.CreateSwarm.parse(payload)
+  def parse("cmd:create_stack", payload), do: Cmd.CreateStack.parse(payload)
+
   def parse("event:swarm_created", payload), do: Event.SwarmCreated.parse(payload)
+  def parse("event:service_created", payload), do: Event.ServiceCreated.parse(payload)
 
   defp pushes() do
     quote do

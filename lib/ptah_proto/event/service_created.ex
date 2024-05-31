@@ -6,4 +6,8 @@ defmodule PtahProto.Event.ServiceCreated do
   @type t :: %__MODULE__{
           service_id: integer()
         }
+
+  def parse(%{} = payload) do
+    %__MODULE__{service_id: payload["service_id"]}
+  end
 end
