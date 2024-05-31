@@ -1,4 +1,6 @@
 defmodule PtahProto.Cmd.CreateSwarm do
+  @enforce_keys [:swarm_id]
+  @derive Jason.Encoder
   defstruct swarm_id: 0
 
   @type t :: %__MODULE__{
