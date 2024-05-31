@@ -51,7 +51,7 @@ defmodule PtahProto do
       end
 
       defp ptah_push(socket, name, packet) do
-        Slipstream.Channel.push(socket, unquote(topic), "ptah:#{name}", packet)
+        Slipstream.push(socket, unquote(topic), "ptah:#{name}", packet)
       end
 
       unquote(handle_message())
