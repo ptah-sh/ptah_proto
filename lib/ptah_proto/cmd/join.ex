@@ -60,7 +60,12 @@ defmodule PtahProto.Cmd.Join do
     %__MODULE__{
       token: payload["token"],
       agent: Agent.parse(payload["agent"]),
-      swarm: Swarm.parse(payload["swarm"]),
+      swarm:
+        if payload["swarm"] do
+          Swarm.parse(payload["swarm"])
+        else
+          nil
+        end,
       docker: Docker.parse(payload["docker"])
     }
   end
