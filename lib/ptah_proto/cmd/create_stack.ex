@@ -1,11 +1,12 @@
 defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec do
   @derive Jason.Encoder
   @enforce_keys [:name, :image]
-  defstruct name: "", image: ""
+  defstruct name: "", image: "", hostname: ""
 
   @type t :: %__MODULE__{
           name: String.t(),
-          image: String.t()
+          image: String.t(),
+          hostname: String.t()
         }
 
   def parse(%{} = payload) do
