@@ -1,14 +1,15 @@
 defmodule PtahProto.Event.SwarmCreated.Docker do
   @derive Jason.Encoder
   @enforce_keys [:swarm_id]
-  defstruct swarm_id: ""
+  defstruct swarm_id: "", node_id: ""
 
   @type t :: %__MODULE__{
-          swarm_id: String.t()
+          swarm_id: String.t(),
+          node_id: String.t()
         }
 
   def parse(%{} = payload) do
-    %__MODULE__{swarm_id: payload["swarm_id"]}
+    %__MODULE__{swarm_id: payload["swarm_id"], node_id: payload["node_id"]}
   end
 end
 
