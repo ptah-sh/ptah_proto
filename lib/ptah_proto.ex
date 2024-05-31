@@ -46,7 +46,7 @@ defmodule PtahProto do
       @behaviour PtahProto
 
       @impl Slipstream
-      def handle_message(_topic, name, payload, socket) do
+      def handle_message(_topic, "ptah:" <> name, payload, socket) do
         handle_message(name, payload, socket)
       end
 
