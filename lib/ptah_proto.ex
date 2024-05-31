@@ -18,8 +18,6 @@ defmodule PtahProto do
 
   defmacro __using__(:phx_channel) do
     quote do
-      use Phoenix.Channel
-
       @behaviour PtahProto
 
       @impl true
@@ -33,13 +31,11 @@ defmodule PtahProto do
 
   defmacro __using__(:slipstream) do
     quote do
-      use Slipstream
-
       @behaviour PtahProto
 
       @impl Slipstream
       def handle_message(_topic, name, payload, socket) do
-        PtahProto.handle_message(name, payload, socket)
+        handle_message(name, payload, socket)
       end
 
       unquote(handle_message())
