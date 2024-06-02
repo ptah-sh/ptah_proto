@@ -1,7 +1,25 @@
-defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec do
+defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec.Mount do
   @derive Jason.Encoder
-  @enforce_keys [:name, :image]
-  defstruct name: "", image: "", hostname: ""
+  @enforce_keys [:target, :source, :type]
+  defstruct target: "", source: "", type: ""
+
+  @type t :: %__MODULE__{
+          target: String.t(),
+          source: String.t(),
+          type: String.t()
+        }
+
+  def parse(%{} = payload) do
+    %__MODULE__{target: payload["target"], source: payload["source"], type: payload["type"]}
+  end
+end
+
+defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec do
+  alias PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec.Mount
+
+  @derive Jason.Encoder
+  @enforce_keys [:name, :image, :hostname, :mounts]
+  defstruct name: "", image: "", hostname: "", mounts: []
 
   @type t :: %__MODULE__{
           name: String.t(),
@@ -10,7 +28,12 @@ defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSp
         }
 
   def parse(%{} = payload) do
-    %__MODULE__{name: payload["name"], image: payload["image"]}
+    %__MODULE__{
+      name: payload["name"],
+      image: payload["image"],
+      hostname: payload["hostname"],
+      mounts: Enum.map(payload["mounts"], &Mount.parse/1)
+    }
   end
 end
 
