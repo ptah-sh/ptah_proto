@@ -37,6 +37,20 @@ defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSp
   end
 end
 
+defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.Placement do
+  @derive Jason.Encoder
+  @enforce_keys [:constraints]
+  defstruct constraints: []
+
+  @type t :: %__MODULE__{
+          constraints: [String.t()]
+        }
+
+  def parse(%{} = payload) do
+    %__MODULE__{constraints: payload["constraints"]}
+  end
+end
+
 defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.Network do
   @derive Jason.Encoder
   @enforce_keys [:target]
@@ -53,20 +67,26 @@ defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.Network do
 end
 
 defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate do
-  alias PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.{ContainerSpec, Network}
+  alias PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.{
+    ContainerSpec,
+    Placement,
+    Network
+  }
 
   @derive Jason.Encoder
-  @enforce_keys [:container_spec, :networks]
-  defstruct container_spec: %{}, networks: []
+  @enforce_keys [:container_spec, :placement, :networks]
+  defstruct container_spec: %{}, placement: %{}, networks: []
 
   @type t :: %__MODULE__{
           container_spec: ContainerSpec.t(),
+          placement: Placement.t(),
           networks: [Network.t()]
         }
 
   def parse(%{} = payload) do
     %__MODULE__{
       container_spec: ContainerSpec.parse(payload["container_spec"]),
+      placement: Placement.parse(payload["placement"]),
       networks: Enum.map(payload["networks"], &Network.parse/1)
     }
   end
