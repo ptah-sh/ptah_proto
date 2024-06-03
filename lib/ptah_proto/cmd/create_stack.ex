@@ -40,13 +40,15 @@ defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSp
   alias PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec.Mount
 
   @derive Jason.Encoder
-  @enforce_keys [:name, :image, :hostname, :mounts]
-  defstruct name: "", image: "", hostname: "", mounts: []
+  @enforce_keys [:name, :image, :hostname, :env, :mounts]
+  defstruct name: "", image: "", hostname: "", env: [], mounts: []
 
   @type t :: %__MODULE__{
           name: String.t(),
           image: String.t(),
-          hostname: String.t()
+          hostname: String.t(),
+          env: [String.t()],
+          mounts: [Mount.t()]
         }
 
   def parse(%{} = payload) do
@@ -54,6 +56,7 @@ defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSp
       name: payload["name"],
       image: payload["image"],
       hostname: payload["hostname"],
+      env: Enum.map(payload["env"], & &1),
       mounts: Enum.map(payload["mounts"], &Mount.parse/1)
     }
   end
