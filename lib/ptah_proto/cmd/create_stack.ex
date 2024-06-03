@@ -230,20 +230,20 @@ defmodule PtahProto.Cmd.CreateStack.Service do
   alias PtahProto.Cmd.CreateStack.Service.ServiceSpec
 
   @derive Jason.Encoder
-  @enforce_keys [:service_id, :service_spec, :caddyfile]
-  defstruct service_id: 0, service_spec: %{}, caddyfile: nil
+  @enforce_keys [:service_id, :service_spec, :caddy]
+  defstruct service_id: 0, service_spec: %{}, caddy: nil
 
   @type t :: %__MODULE__{
           service_id: integer(),
           service_spec: ServiceSpec.t(),
-          caddyfile: String.t()
+          caddy: map()
         }
 
   def parse(%{} = payload) do
     %__MODULE__{
       service_id: payload["service_id"],
       service_spec: ServiceSpec.parse(payload["service_spec"]),
-      caddyfile: payload["caddyfile"]
+      caddy: payload["caddy"]
     }
   end
 end
