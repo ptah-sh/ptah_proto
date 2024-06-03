@@ -1,16 +1,38 @@
-defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec.Mount do
+defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec.Mount.BindOptions do
   @derive Jason.Encoder
-  @enforce_keys [:target, :source, :type]
-  defstruct target: "", source: "", type: ""
+  @enforce_keys [:create_mountpoint]
+  defstruct create_mountpoint: true
+
+  @type t :: %__MODULE__{
+          create_mountpoint: boolean()
+        }
+
+  def parse(%{} = payload) do
+    %__MODULE__{create_mountpoint: payload["create_mountpoint"]}
+  end
+end
+
+defmodule PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec.Mount do
+  alias PtahProto.Cmd.CreateStack.Service.ServiceSpec.TaskTemplate.ContainerSpec.Mount.BindOptions
+
+  @derive Jason.Encoder
+  @enforce_keys [:target, :source, :type, :bind_options]
+  defstruct target: "", source: "", type: "", bind_options: %{}
 
   @type t :: %__MODULE__{
           target: String.t(),
           source: String.t(),
-          type: String.t()
+          type: String.t(),
+          bind_options: BindOptions.t()
         }
 
   def parse(%{} = payload) do
-    %__MODULE__{target: payload["target"], source: payload["source"], type: payload["type"]}
+    %__MODULE__{
+      target: payload["target"],
+      source: payload["source"],
+      type: payload["type"],
+      bind_options: BindOptions.parse(payload["bind_options"])
+    }
   end
 end
 
