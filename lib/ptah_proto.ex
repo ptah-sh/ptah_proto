@@ -5,6 +5,7 @@ defmodule PtahProto do
 
   def parse("cmd:create_swarm", payload), do: Cmd.CreateSwarm.parse(payload)
   def parse("cmd:create_stack", payload), do: Cmd.CreateStack.parse(payload)
+  def parse("cmd:create_config", payload), do: Cmd.CreateConfig.parse(payload)
   def parse("cmd:update_service", payload), do: Cmd.UpdateService.parse(payload)
   def parse("cmd:update_node_labels", payload), do: Cmd.UpdateNodeLabels.parse(payload)
   def parse("cmd:load_caddy_config", payload), do: Cmd.LoadCaddyConfig.parse(payload)
@@ -19,6 +20,9 @@ defmodule PtahProto do
 
       def push(socket, %Cmd.CreateStack{} = packet),
         do: ptah_proto_push(socket, "cmd:create_stack", packet)
+
+      def push(socket, %Cmd.CreateConfig{} = packet),
+        do: ptah_proto_push(socket, "cmd:create_config", packet)
 
       def push(socket, %Cmd.UpdateService{} = packet),
         do: ptah_proto_push(socket, "cmd:update_service", packet)
