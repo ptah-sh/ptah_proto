@@ -12,6 +12,7 @@ defmodule PtahProto do
   def parse("cmd:self_upgrade", payload), do: Cmd.SelfUpgrade.parse(payload)
   def parse("event:swarm_created", payload), do: Event.SwarmCreated.parse(payload)
   def parse("event:service_created", payload), do: Event.ServiceCreated.parse(payload)
+  def parse("event:config_created", payload), do: Event.ConfigCreated.parse(payload)
 
   defp pushes() do
     quote do
