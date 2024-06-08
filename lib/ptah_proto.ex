@@ -37,6 +37,9 @@ defmodule PtahProto do
       def push(socket, %Cmd.SelfUpgrade{} = packet),
         do: ptah_proto_push(socket, "cmd:self_upgrade", packet)
 
+      def push(socket, %Event.ConfigCreated{} = packet),
+        do: ptah_proto_push(socket, "event:config_created", packet)
+
       def push(socket, %Event.SwarmCreated{} = packet),
         do: ptah_proto_push(socket, "event:swarm_created", packet)
 
