@@ -42,19 +42,53 @@ defmodule PtahProto.Cmd.Join.Agent do
   end
 end
 
+defmodule PtahProto.Cmd.Join.Networks.IP do
+  @derive Jason.Encoder
+  @enforce_keys [:version, :address]
+  defstruct version: "", address: ""
+
+  @type t :: %__MODULE__{
+          version: String.t(),
+          address: String.t()
+        }
+
+  def parse(%{} = payload) do
+    %__MODULE__{version: payload["version"], address: payload["address"]}
+  end
+end
+
+defmodule PtahProto.Cmd.Join.Network do
+  @derive Jason.Encoder
+  @enforce_keys [:name, :ips]
+  defstruct name: "", ips: []
+
+  @type t :: %__MODULE__{
+          name: String.t(),
+          ips: [PtahProto.Cmd.Join.Networks.IP.t()]
+        }
+
+  def parse(%{} = payload) do
+    %__MODULE__{
+      name: payload["name"],
+      ips: Enum.map(payload["ips"], &PtahProto.Cmd.Join.Networks.IP.parse/1)
+    }
+  end
+end
+
 defmodule PtahProto.Cmd.Join do
   alias PtahProto.Cmd.Join.{Swarm, Docker, Agent}
 
   @derive Jason.Encoder
-  @enforce_keys [:token, :agent, :mounts_root, :swarm, :docker]
-  defstruct token: "", agent: %{}, mounts_root: "", swarm: %{}, docker: %{}
+  @enforce_keys [:token, :agent, :mounts_root, :swarm, :docker, :networks]
+  defstruct token: "", agent: %{}, mounts_root: "", swarm: %{}, docker: %{}, networks: []
 
   @type t :: %__MODULE__{
           token: String.t(),
           agent: Agent.t(),
           mounts_root: String.t(),
           swarm: Swarm.t(),
-          docker: Docker.t()
+          docker: Docker.t(),
+          networks: [PtahProto.Cmd.Join.Network.t()]
         }
 
   def parse(%{} = payload) do
@@ -68,7 +102,8 @@ defmodule PtahProto.Cmd.Join do
         else
           nil
         end,
-      docker: Docker.parse(payload["docker"])
+      docker: Docker.parse(payload["docker"]),
+      networks: Enum.map(payload["networks"], &PtahProto.Cmd.Join.Network.parse/1)
     }
   end
 end
