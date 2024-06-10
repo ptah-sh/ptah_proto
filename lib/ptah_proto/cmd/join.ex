@@ -79,13 +79,12 @@ defmodule PtahProto.Cmd.Join do
   alias PtahProto.Cmd.Join.{Swarm, Docker, Agent}
 
   @derive Jason.Encoder
-  @enforce_keys [:token, :agent, :mounts_root, :swarm, :docker, :networks]
-  defstruct token: "", agent: %{}, mounts_root: "", swarm: %{}, docker: %{}, networks: []
+  @enforce_keys [:token, :agent, :swarm, :docker, :networks]
+  defstruct token: "", agent: %{},  swarm: %{}, docker: %{}, networks: []
 
   @type t :: %__MODULE__{
           token: String.t(),
           agent: Agent.t(),
-          mounts_root: String.t(),
           swarm: Swarm.t(),
           docker: Docker.t(),
           networks: [PtahProto.Cmd.Join.Network.t()]
@@ -95,7 +94,6 @@ defmodule PtahProto.Cmd.Join do
     %__MODULE__{
       token: payload["token"],
       agent: Agent.parse(payload["agent"]),
-      mounts_root: payload["mounts_root"],
       swarm:
         if payload["swarm"] do
           Swarm.parse(payload["swarm"])
