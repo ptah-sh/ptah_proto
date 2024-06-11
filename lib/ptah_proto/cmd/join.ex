@@ -80,7 +80,7 @@ defmodule PtahProto.Cmd.Join do
 
   @derive Jason.Encoder
   @enforce_keys [:token, :agent, :swarm, :docker, :networks]
-  defstruct token: "", agent: %{},  swarm: %{}, docker: %{}, networks: []
+  defstruct token: "", agent: %{}, swarm: %{}, docker: %{}, networks: []
 
   @type t :: %__MODULE__{
           token: String.t(),

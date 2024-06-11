@@ -1,17 +1,3 @@
-defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Mount.VolumeOptions do
-  @derive Jason.Encoder
-  @enforce_keys [:subpath]
-  defstruct subpath: ""
-
-  @type t :: %__MODULE__{
-          subpath: String.t()
-        }
-
-  def parse(%{} = payload) do
-    %__MODULE__{subpath: payload["subpath"]}
-  end
-end
-
 defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Env do
   @derive Jason.Encoder
   @enforce_keys [:name, :value]
@@ -28,25 +14,21 @@ defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Env do
 end
 
 defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Mount do
-  alias PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Mount.VolumeOptions
-
   @derive Jason.Encoder
-  @enforce_keys [:target, :source, :type, :volume_options]
-  defstruct target: "", source: "", type: "", volume_options: %{}
+  @enforce_keys [:target, :source, :type]
+  defstruct target: "", source: "", type: ""
 
   @type t :: %__MODULE__{
           target: String.t(),
           source: String.t(),
-          type: String.t(),
-          volume_options: VolumeOptions.t()
+          type: String.t()
         }
 
   def parse(%{} = payload) do
     %__MODULE__{
       target: payload["target"],
       source: payload["source"],
-      type: payload["type"],
-      volume_options: VolumeOptions.parse(payload["volume_options"])
+      type: payload["type"]
     }
   end
 end
