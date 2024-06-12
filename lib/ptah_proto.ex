@@ -8,8 +8,10 @@ defmodule PtahProto do
   def parse("cmd:create_config", payload), do: Cmd.CreateConfig.parse(payload)
   def parse("cmd:update_service", payload), do: Cmd.UpdateService.parse(payload)
   def parse("cmd:update_node_labels", payload), do: Cmd.UpdateNodeLabels.parse(payload)
+  def parse("cmd:delete_service", payload), do: Cmd.DeleteService.parse(payload)
   def parse("cmd:load_caddy_config", payload), do: Cmd.LoadCaddyConfig.parse(payload)
   def parse("cmd:self_upgrade", payload), do: Cmd.SelfUpgrade.parse(payload)
+
   def parse("event:swarm_created", payload), do: Event.SwarmCreated.parse(payload)
   def parse("event:service_created", payload), do: Event.ServiceCreated.parse(payload)
   def parse("event:config_created", payload), do: Event.ConfigCreated.parse(payload)
@@ -31,6 +33,9 @@ defmodule PtahProto do
       def push(socket, %Cmd.UpdateNodeLabels{} = packet),
         do: ptah_proto_push(socket, "cmd:update_node_labels", packet)
 
+      def push(socket, %Cmd.DeleteService{} = packet),
+        do: ptah_proto_push(socket, "cmd:delete_service", packet)
+
       def push(socket, %Cmd.LoadCaddyConfig{} = packet),
         do: ptah_proto_push(socket, "cmd:load_caddy_config", packet)
 
@@ -45,6 +50,12 @@ defmodule PtahProto do
 
       def push(socket, %Event.ServiceCreated{} = packet),
         do: ptah_proto_push(socket, "event:service_created", packet)
+
+      def push(socket, %Event.ServiceUpdated{} = packet),
+        do: ptah_proto_push(socket, "event:service_updated", packet)
+
+      def push(socket, %Event.ServiceDeleted{} = packet),
+        do: ptah_proto_push(socket, "event:service_deleted", packet)
     end
   end
 
