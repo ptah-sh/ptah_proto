@@ -1,14 +1,15 @@
 defmodule PtahProto.Cmd.UpdateService.Docker do
   @derive Jason.Encoder
-  @enforce_keys [:service_id]
-  defstruct service_id: ""
+  @enforce_keys [:service_id, :auth_config_id]
+  defstruct service_id: "", auth_config_id: ""
 
   @type t :: %__MODULE__{
-          service_id: String.t()
+          service_id: String.t(),
+          auth_config_id: String.t()
         }
 
   def parse(%{} = payload) do
-    %__MODULE__{service_id: payload["service_id"]}
+    %__MODULE__{service_id: payload["service_id"], auth_config_id: payload["auth_config_id"]}
   end
 end
 
