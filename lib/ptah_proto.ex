@@ -6,6 +6,7 @@ defmodule PtahProto do
   def parse("cmd:create_swarm", payload), do: Cmd.CreateSwarm.parse(payload)
   def parse("cmd:create_service", payload), do: Cmd.CreateService.parse(payload)
   def parse("cmd:create_config", payload), do: Cmd.CreateConfig.parse(payload)
+  def parse("cmd:create_secret", payload), do: Cmd.CreateSecret.parse(payload)
 
   def parse("cmd:update_service", payload), do: Cmd.UpdateService.parse(payload)
   def parse("cmd:update_node_labels", payload), do: Cmd.UpdateNodeLabels.parse(payload)
@@ -18,6 +19,7 @@ defmodule PtahProto do
   def parse("event:swarm_created", payload), do: Event.SwarmCreated.parse(payload)
   def parse("event:service_created", payload), do: Event.ServiceCreated.parse(payload)
   def parse("event:config_created", payload), do: Event.ConfigCreated.parse(payload)
+  def parse("event:secret_created", payload), do: Event.SecretCreated.parse(payload)
 
   def parse("event:service_updated", payload), do: Event.ServiceUpdated.parse(payload)
 
@@ -33,6 +35,9 @@ defmodule PtahProto do
 
       def push(socket, %Cmd.CreateConfig{} = packet),
         do: ptah_proto_push(socket, "cmd:create_config", packet)
+
+      def push(socket, %Cmd.CreateSecret{} = packet),
+        do: ptah_proto_push(socket, "cmd:create_secret", packet)
 
       def push(socket, %Cmd.UpdateService{} = packet),
         do: ptah_proto_push(socket, "cmd:update_service", packet)
@@ -57,6 +62,9 @@ defmodule PtahProto do
 
       def push(socket, %Event.ServiceCreated{} = packet),
         do: ptah_proto_push(socket, "event:service_created", packet)
+
+      def push(socket, %Event.SecretCreated{} = packet),
+        do: ptah_proto_push(socket, "event:secret_created", packet)
 
       def push(socket, %Event.ServiceUpdated{} = packet),
         do: ptah_proto_push(socket, "event:service_updated", packet)

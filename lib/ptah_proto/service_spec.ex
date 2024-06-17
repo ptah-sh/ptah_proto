@@ -33,19 +33,67 @@ defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Mount do
   end
 end
 
-defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec do
-  alias PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.{Env, Mount}
+defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.File do
+  @derive Jason.Encoder
+  @enforce_keys [:name]
+  defstruct name: ""
+
+  @type t :: %__MODULE__{
+          name: String.t()
+        }
+
+  def parse(%{} = payload) do
+    %__MODULE__{name: payload["name"]}
+  end
+end
+
+defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Secret do
+  alias PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.File
 
   @derive Jason.Encoder
-  @enforce_keys [:name, :image, :hostname, :env, :mounts]
-  defstruct name: "", image: "", hostname: "", env: [], mounts: []
+  @enforce_keys [:file]
+  defstruct file: %{}
+
+  @type t :: %__MODULE__{
+          file: File.t()
+        }
+
+  def parse(%{} = payload) do
+    %__MODULE__{file: File.parse(payload["file"])}
+  end
+end
+
+defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Config do
+  alias PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.File
+
+  @derive Jason.Encoder
+  @enforce_keys [:file]
+  defstruct file: %{}
+
+  @type t :: %__MODULE__{
+          file: File.t()
+        }
+
+  def parse(%{} = payload) do
+    %__MODULE__{file: File.parse(payload["file"])}
+  end
+end
+
+defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec do
+  alias PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.{Env, Mount, Secret, Config}
+
+  @derive Jason.Encoder
+  @enforce_keys [:name, :image, :hostname, :env, :mounts, :secrets, :configs]
+  defstruct name: "", image: "", hostname: "", env: [], mounts: [], secrets: [], configs: []
 
   @type t :: %__MODULE__{
           name: String.t(),
           image: String.t(),
           hostname: String.t(),
           env: [Env.t()],
-          mounts: [Mount.t()]
+          mounts: [Mount.t()],
+          secrets: [Secret.t()],
+          configs: [Config.t()]
         }
 
   def parse(%{} = payload) do
@@ -54,7 +102,9 @@ defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec do
       image: payload["image"],
       hostname: payload["hostname"],
       env: Enum.map(payload["env"], &Env.parse/1),
-      mounts: Enum.map(payload["mounts"], &Mount.parse/1)
+      mounts: Enum.map(payload["mounts"], &Mount.parse/1),
+      secrets: Enum.map(payload["secrets"], &Secret.parse/1),
+      configs: Enum.map(payload["configs"], &Config.parse/1)
     }
   end
 end

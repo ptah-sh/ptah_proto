@@ -1,17 +1,17 @@
-defmodule PtahProto.Cmd.CreateConfig do
+defmodule PtahProto.Cmd.CreateSecret do
   @derive Jason.Encoder
-  @enforce_keys [:config_id, :name, :data]
-  defstruct config_id: 0, name: "", data: ""
+  @enforce_keys [:secret_id, :name, :data]
+  defstruct secret_id: 0, name: "", data: ""
 
   @type t :: %__MODULE__{
-          config_id: integer(),
+          secret_id: integer(),
           name: String.t(),
           data: any()
         }
 
   def parse(%{} = payload) do
     %__MODULE__{
-      config_id: payload["config_id"],
+      secret_id: payload["secret_id"],
       name: payload["name"],
       data: payload["data"]
     }
