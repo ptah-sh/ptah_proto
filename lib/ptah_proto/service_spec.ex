@@ -51,15 +51,16 @@ defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Secret do
   alias PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.File
 
   @derive Jason.Encoder
-  @enforce_keys [:file]
-  defstruct file: %{}
+  @enforce_keys [:file, :secret_id]
+  defstruct file: %{}, secret_id: ""
 
   @type t :: %__MODULE__{
-          file: File.t()
+          file: File.t(),
+          secret_id: String.t()
         }
 
   def parse(%{} = payload) do
-    %__MODULE__{file: File.parse(payload["file"])}
+    %__MODULE__{file: File.parse(payload["file"]), secret_id: payload["secret_id"]}
   end
 end
 
@@ -67,15 +68,16 @@ defmodule PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.Config do
   alias PtahProto.ServiceSpec.TaskTemplate.ContainerSpec.File
 
   @derive Jason.Encoder
-  @enforce_keys [:file]
-  defstruct file: %{}
+  @enforce_keys [:file, :config_id]
+  defstruct file: %{}, config_id: ""
 
   @type t :: %__MODULE__{
-          file: File.t()
+          file: File.t(),
+          config_id: String.t()
         }
 
   def parse(%{} = payload) do
-    %__MODULE__{file: File.parse(payload["file"])}
+    %__MODULE__{file: File.parse(payload["file"]), config_id: payload["config_id"]}
   end
 end
 
